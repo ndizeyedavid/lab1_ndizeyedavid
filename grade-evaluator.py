@@ -3,6 +3,9 @@ import csv
 import sys
 import os
 
+BG_RED = "\033[41m"
+RESET = "\033[0m"
+
 def load_csv_data():
     """
     Prompts the user for a filename, checks if it exists, 
@@ -42,7 +45,7 @@ def evaluate_grades(data):
         if 0 < assignment["score"] > 100:
             invalid_score_assignments.append(assignment["assignment"])
             data.pop(index)
-            print(f"Assignment {assignment['assignment']} has the score {assignment['score']} and it's not in the range of 0-100. Therefore it has been excluded")
+            print(f"{BG_RED}[WARNING]{RESET} Assignment {assignment['assignment']} has the score {assignment['score']} and it's not in the range of 0-100. Therefore it has been excluded")
 
     # TODO: b) Validate total weights (Total=100, Summative=40, Formative=60)
     # TODO: c) Calculate the Final Grade and GPA
