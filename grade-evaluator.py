@@ -9,12 +9,8 @@ RESET = "\033[0m"
 BG_GREEN = "\033[42m"
 
 def load_csv_data():
-    """
-    Prompts the user for a filename, checks if it exists, 
-    and extracts all fields into a list of dictionaries.
-    """
-    # filename = input("Enter the name of the CSV file to process (e.g., grades.csv): ")
-    filename = "grades.csv"
+    # filename = "grades.csv"
+    filename = input("Enter the name of the CSV file to process (e.g., grades.csv): ") or "grades.csv"
     
     if not os.path.exists(filename):
         print(f"Error: The file '{filename}' was not found.")
@@ -25,6 +21,15 @@ def load_csv_data():
     try:
         with open(filename, mode='r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
+
+            if os.path.getsize(filename) == 0:
+                print("The CSV file is empty. Please provide a CSV file with assignment data.")
+                sys.exit(1)
+
+            if reader.fieldnames is None:
+                print("The CSV file is missing a header row. Please provide a valid CSV file.")
+                sys.exit(1)
+                
             for row in reader:
                 # Convert numeric fields to floats for calculations
                 assignments.append({
