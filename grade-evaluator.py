@@ -62,9 +62,9 @@ def evaluate_grades(data):
         elif assignment["group"] == "Summative":
             weights["Summative"] += assignment["weight"]
             
-    print(f"Total weight for Formatives: {weights["Formative"]}")
-    print(f"Total weight for Summatives: {weights["Summative"]}")
-    print(f"Total weight for all Assignments: {weights["total"]}")
+    print(f"Total weight for Formatives: {int(weights["Formative"])}/60")
+    print(f"Total weight for Summatives: {int(weights["Summative"])}/40")
+    print(f"Total weight for all Assignments: {int(weights["total"])}/100")
 
     if weights["Formative"] != 60:
         print(f"{BG_RED}ERROR{RESET} This Formative weights are NOT well calibrated")
@@ -103,6 +103,7 @@ def evaluate_grades(data):
         status = "Pass"
     else:
         status = "Fail"
+        
     print(f"Formative(60): {round(scores['Formative'], 2)}")
     print(f"Summative(40): {round(scores['Summative'], 2)}")
     print("-" * 70)
@@ -110,21 +111,21 @@ def evaluate_grades(data):
     # TODO: e) Check for failed formative assignments (< 50%) and determine which one(s) have the highest weight for resubmission.
 
     resubmission_assignments = []
-    if percentage_formative < 50:
-        low_scored_assignments = []
-        individual_weights = []
+    # if percentage_formative < 50:
+    low_scored_assignments = []
+    individual_weights = []
 
-        for index, assignment in enumerate(data):
-            if assignment["score"] < 50 and assignment["group"] == "Formative":
-                individual_weights.append(assignment["weight"])
-                low_scored_assignments.append(index)
+    for index, assignment in enumerate(data):
+        if assignment["score"] < 50 and assignment["group"] == "Formative":
+            individual_weights.append(assignment["weight"])
+            low_scored_assignments.append(index)
 
-        highest_weight = max(individual_weights)
+    highest_weight = max(individual_weights)
 
-        for assignmentIndex in low_scored_assignments:
-            assignment = data[assignmentIndex]
-            if assignment["weight"] == highest_weight:
-                resubmission_assignments.append(assignment["assignment"])
+    for assignmentIndex in low_scored_assignments:
+        assignment = data[assignmentIndex]
+        if assignment["weight"] == highest_weight:
+            resubmission_assignments.append(assignment["assignment"])
 
     # TODO: f) Print the final decision (PASSED / FAILED) and resubmission options
     if status == "Pass":
