@@ -8,7 +8,8 @@ def load_csv_data():
     Prompts the user for a filename, checks if it exists, 
     and extracts all fields into a list of dictionaries.
     """
-    filename = input("Enter the name of the CSV file to process (e.g., grades.csv): ")
+    # filename = input("Enter the name of the CSV file to process (e.g., grades.csv): ")
+    filename = "grades.csv"
     
     if not os.path.exists(filename):
         print(f"Error: The file '{filename}' was not found.")
@@ -33,13 +34,16 @@ def load_csv_data():
         sys.exit(1)
 
 def evaluate_grades(data):
-    """
-    Implement your logic here.
-    'data' is a list of dictionaries containing the assignment records.
-    """
     print("\n--- Processing Grades ---")
     
-    # TODO: a) Check if all scores are percentage based (0-100)
+    # TODOs: a) Check if all scores are percentage based (0-100)
+    invalid_score_assignments = [];
+    for index, assignment in enumerate(data):
+        if 0 < assignment["score"] > 100:
+            invalid_score_assignments.append(assignment["assignment"])
+            data.pop(index)
+            print(f"Assignment {assignment['assignment']} has the score {assignment['score']} and it's not in the range of 0-100. Therefore it has been excluded")
+
     # TODO: b) Validate total weights (Total=100, Summative=40, Formative=60)
     # TODO: c) Calculate the Final Grade and GPA
     # TODO: d) Determine Pass/Fail status (>= 50% in BOTH categories)
