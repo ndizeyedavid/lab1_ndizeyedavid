@@ -103,12 +103,13 @@ def evaluate_grades(data):
         status = "Pass"
     else:
         status = "Fail"
-    print(f"Formative(60): {round(percentage_formative, 2)}")
-    print(f"Summative(40): {round(percentage_summative, 2)}")
+    print(f"Formative(60): {round(scores['Formative'], 2)}")
+    print(f"Summative(40): {round(scores['Summative'], 2)}")
     print("-" * 70)
     
     # TODO: e) Check for failed formative assignments (< 50%) and determine which one(s) have the highest weight for resubmission.
 
+    resubmission_assignments = []
     if percentage_formative < 50:
         low_scored_assignments = []
         individual_weights = []
@@ -120,14 +121,17 @@ def evaluate_grades(data):
 
         highest_weight = max(individual_weights)
 
-        resubmission_assignments = []
         for assignmentIndex in low_scored_assignments:
             assignment = data[assignmentIndex]
             if assignment["weight"] == highest_weight:
                 resubmission_assignments.append(assignment["assignment"])
 
     # TODO: f) Print the final decision (PASSED / FAILED) and resubmission options
-    print(f"Status: {status}")
+    if status == "Pass":
+        print(f"Status: {BG_GREEN}PASSED{RESET}")
+    else:
+        print(f"Status: {BG_RED}FAILED{RESET}")
+
     if len(resubmission_assignments) > 0:
         print(f"Available for resubmission: {", ".join(resubmission_assignments)}")
     else:
