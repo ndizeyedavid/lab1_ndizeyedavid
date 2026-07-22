@@ -77,9 +77,36 @@ def evaluate_grades(data):
         sys.exit(1)
     else:
         print(f"{BG_GREEN}ALL WEIGHTS ARE PERFECTLY CALLIBRATED{RESET}")
+        print("-" * 70)
 
-    # TODO: c) Calculate the Final Grade and GPA
+    # TODOs: c) Calculate the Final Grade and GPA
+    total_grade = 0
+    for assignment in data:
+        total_grade += (assignment["score"] * assignment["weight"]) / 100
+    GPA = (total_grade / 100) * 5.0
+
+    print(f"Final GPA = {round(GPA, 4)}")
+    print("-" * 70)
+
     # TODO: d) Determine Pass/Fail status (>= 50% in BOTH categories)
+    scores = {"Formative": 0.0, "Summative": 0.0}
+    for assignment in data:
+        if assignment["group"] == "Formative":
+            scores["Formative"] += (assignment["score"] * assignment["weight"]) / 100
+        else:
+            scores["Summative"] += (assignment["score"] * assignment["weight"]) / 100
+
+    status = ""
+    percentage_formative = (scores["Formative"] * 100) / 60
+    percentage_summative = (scores["Summative"] * 100) / 40
+    if  percentage_formative >= 50 and percentage_summative >= 50:
+        status = "Pass"
+    else:
+        status = "Fail"
+    print(f"Formative(60): {round(percentage_formative, 2)}")
+    print(f"Summative(40): {round(percentage_summative, 2)}")
+    print("-" * 70)
+
     # TODO: e) Check for failed formative assignments (< 50%)
     #          and determine which one(s) have the highest weight for resubmission.
     # TODO: f) Print the final decision (PASSED / FAILED) and resubmission options
