@@ -20,7 +20,7 @@ timestamp=$(date +"%Y%m%d-%H%M%S")
 echo "[OK] Timestamp Recorded"
 
 echo "$log_timestamp Archived grades.csv to grades-$timestamp.csv" >> organizer.log
-mv "./grades.csv" "./archive/grades-$timestamp.csv"
+mv "./grades.csv" "./archive/grades_$timestamp.csv"
 echo "[OK] grades.csv file successfully archived(grades-$timestamp.csv)"
 
 echo "$log_timestamp New grades.csv file initiated" >> organizer.log
