@@ -120,17 +120,17 @@ def evaluate_grades(data):
     low_scored_assignments = []
     individual_weights = []
 
-    for index, assignment in enumerate(data):
-        if assignment["score"] < 50 and assignment["group"] == "Formative":
+    for assignment in data:
+        if assignment["group"] == "Formative" and assignment["score"] < 50:
             individual_weights.append(assignment["weight"])
-            low_scored_assignments.append(index)
+            low_scored_assignments.append(assignment)
 
-    highest_weight = max(individual_weights)
+    if individual_weights:
+        highest_weight = max(individual_weights)
 
-    for assignmentIndex in low_scored_assignments:
-        assignment = data[assignmentIndex]
-        if assignment["weight"] == highest_weight:
-            resubmission_assignments.append(assignment["assignment"])
+        for assignment in low_scored_assignments:
+            if assignment["weight"] == highest_weight:
+                resubmission_assignments.append(assignment["assignment"])
 
     # TODO: f) Print the final decision (PASSED / FAILED) and resubmission options
     if status == "Pass":
