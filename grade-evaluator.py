@@ -16,20 +16,31 @@ def load_csv_data():
         print(f"{BG_RED}[ERROR]{RESET} The file '{filename}' was not found.")
         sys.exit(1)
         
+    try:
+        if os.path.getsize(filename) == 0:
+            print(f"{BG_RED}[ERROR]{RESET} The CSV file is empty. Please provide a CSV file with assignment data.")
+            sys.exit(1)
+    except OSError as e:
+        print(f"{BG_RED}[ERROR]{RESET} Could not access file '{filename}': {e}")
+        sys.exit(1)
+        
     assignments = []
     
     try:
         with open(filename, mode='r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
 
-            if os.path.getsize(filename) == 0:
-                print(f"{BG_RED}[ERROR]{RESET} The CSV file is empty. Please provide a CSV file with assignment data.")
-                sys.exit(1)
-
             if reader.fieldnames is None:
                 print(f"{BG_RED}[ERROR]{RESET} The CSV file is missing a header row. Please provide a valid CSV file.")
                 sys.exit(1)
-                
+
+            headers = [header.strip().lower() for header in reader.fieldnames if header]
+            required = {"assignment", "group", "score", "weight"}
+
+            if not required.issubset(set(headers)):
+                print(f"{BG_RED}[ERROR]{RESET} CSV is missing required columns. Expected headers: assignment, group, score, weight")
+                sys.exit(1)
+
             for row in reader:
                 # Convert numeric fields to floats for calculations
                 assignments.append({
