@@ -188,7 +188,7 @@ def evaluate_grades(data):
         print(f"Status: {BG_RED}FAILED{RESET}")
 
     if len(resubmission_assignments) > 0:
-        print(f"Available for resubmission: {', '.join(resubmission_assignments)}")
+        print("Available for resubmission: " + ", ".join(resubmission_assignments))
     else:
         print(f"Available for resubmission: None")
 
