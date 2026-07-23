@@ -49,7 +49,7 @@ def evaluate_grades(data):
     # TODOs: a) Check if all scores are percentage based (0-100)
     invalid_score_assignments = [];
     for index, assignment in enumerate(data):
-        if 0 < assignment["score"] > 100:
+        if not(0 <= assignment["score"] <= 100):
             invalid_score_assignments.append(assignment["assignment"])
             data.pop(index)
             print(f"{BG_YELLOW}[WARNING]{RESET} Assignment {assignment['assignment']} has the score {assignment['score']} and it's not in the range of 0-100. Therefore it has been excluded")
