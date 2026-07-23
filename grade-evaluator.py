@@ -114,7 +114,6 @@ def evaluate_grades(data):
     print("-" * 70)
     
     # TODO: e) Check for failed formative assignments (< 50%) and determine which one(s) have the highest weight for resubmission.
-
     resubmission_assignments = []
     # if percentage_formative < 50:
     low_scored_assignments = []
