@@ -41,14 +41,41 @@ def load_csv_data():
                 print(f"{BG_RED}[ERROR]{RESET} CSV is missing required columns. Expected headers: assignment, group, score, weight")
                 sys.exit(1)
 
-            for row in reader:
-                # Convert numeric fields to floats for calculations
+            bad_rows = 0
+            for row_num, row in enumerate(reader, start=2):
+                single_row = {
+                    (header.strip().lower() if header else header): (value or "").strip()
+                    for header, value in row.items()
+                }
+
+                assignment_name = single_row.get("assignment", "")
+                group = single_row.get("group", "")
+                score_s = single_row.get("score", "")
+                weight_s = single_row.get("weight", "")
+
+                if not assignment_name or not group or score_s == "" or weight_s == "":
+                    print(f"{BG_YELLOW}[WARNING]{RESET} Row {row_num} has missing fields — skipping.")
+                    bad_rows += 1
+                    continue
+
+                try:
+                    score = float(score_s)
+                    weight = float(weight_s)
+                except ValueError:
+                    print(f"{BG_YELLOW}[WARNING]{RESET} Row {row_num} has non-numeric score/weight — skipping.")
+                    bad_rows += 1
+                    continue
+
                 assignments.append({
-                    'assignment': row['assignment'],
-                    'group': row['group'],
-                    'score': float(row['score']),
-                    'weight': float(row['weight'])
+                    'assignment': assignment_name,
+                    'group': group,
+                    'score': score,
+                    'weight': weight
                 })
+
+            if bad_rows > 0:
+                print(f"{BG_YELLOW}[WARNING]{RESET} Skipped {bad_rows} bad row(s).")
+
         return assignments
     except Exception as e:
         print(f"{BG_RED}[ERROR]{RESET} An error occurred while reading the file: {e}")
