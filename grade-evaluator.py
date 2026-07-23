@@ -85,15 +85,24 @@ def evaluate_grades(data):
     print("\n--- Processing Grades ---")
     
     # TODOs: a) Check if all scores are percentage based (0-100)
-    invalid_score_assignments = [];
-    for index, assignment in enumerate(data):
-        if not(0 <= assignment["score"] <= 100):
-            invalid_score_assignments.append(assignment["assignment"])
-            data.pop(index)
-            print(f"{BG_YELLOW}[WARNING]{RESET} Assignment {assignment['assignment']} has the score {assignment['score']} and it's not in the range of 0-100. Therefore it has been excluded")
+    valid_data = []
+    invalid_score_assignments = []
+    for assignment in data:
+        if 0 <= assignment["score"] <= 100:
+            valid_data.append(assignment)
+        else:
+            invalid_score_assignments.append((assignment["assignment"], assignment["score"]))
 
-    if len(invalid_score_assignments) > 0:
+    if invalid_score_assignments:
+        for name, score in invalid_score_assignments:
+            print(f"{BG_YELLOW}[WARNING]{RESET} Assignment '{name}' has score {score} (outside 0-100) and was excluded.")
         print("-" * 70)
+
+    data = valid_data
+
+    if not data:
+        print(f"{BG_RED}[ERROR]{RESET} No assignments remain after filtering invalid scores.")
+        sys.exit(1)
 
     # TODOs: b) Validate total weights (Total=100, Summative=40, Formative=60)
     weights = {"total": 0.0, "Formative": 0.0, "Summative": 0.0}
