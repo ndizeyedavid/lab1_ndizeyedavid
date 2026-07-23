@@ -13,7 +13,7 @@ def load_csv_data():
     filename = input("Enter the name of the CSV file to process (e.g., grades.csv): ") or "grades.csv"
     
     if not os.path.exists(filename):
-        print(f"Error: The file '{filename}' was not found.")
+        print(f"{BG_RED}[ERROR]{RESET} The file '{filename}' was not found.")
         sys.exit(1)
         
     assignments = []
@@ -23,11 +23,11 @@ def load_csv_data():
             reader = csv.DictReader(file)
 
             if os.path.getsize(filename) == 0:
-                print("The CSV file is empty. Please provide a CSV file with assignment data.")
+                print(f"{BG_RED}[ERROR]{RESET} The CSV file is empty. Please provide a CSV file with assignment data.")
                 sys.exit(1)
 
             if reader.fieldnames is None:
-                print("The CSV file is missing a header row. Please provide a valid CSV file.")
+                print(f"{BG_RED}[ERROR]{RESET} The CSV file is missing a header row. Please provide a valid CSV file.")
                 sys.exit(1)
                 
             for row in reader:
@@ -40,7 +40,7 @@ def load_csv_data():
                 })
         return assignments
     except Exception as e:
-        print(f"An error occurred while reading the file: {e}")
+        print(f"{BG_RED}[ERROR]{RESET} An error occurred while reading the file: {e}")
         sys.exit(1)
 
 def evaluate_grades(data):
