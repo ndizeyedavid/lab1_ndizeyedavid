@@ -113,6 +113,9 @@ def evaluate_grades(data):
             weights["Formative"] += assignment["weight"]
         elif assignment["group"] == "Summative":
             weights["Summative"] += assignment["weight"]
+        else:
+            print(f"{BG_YELLOW}[WARNING]{RESET} Assignment '{assignment['assignment']}' has unknown group '{assignment['group']}'. Treated as part of total weight.")
+
             
     print(f"Total weight for Formatives: {int(weights["Formative"])}/60")
     print(f"Total weight for Summatives: {int(weights["Summative"])}/40")
