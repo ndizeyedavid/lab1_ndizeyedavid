@@ -3,6 +3,11 @@ log_timestamp=$(date +"%F - %H:%M:%S")
 
 echo "$log_timestamp Starting the Archiving process" >> organizer.log
 
+if [ ! -f "grades.csv" ]; then
+    echo "[ERROR] The grades file is MISSING"
+    exit 1
+fi
+
 if [ ! -d "archive" ]; then
     echo "$log_timestamp Creating the archive directory" >> organizer.log
     
